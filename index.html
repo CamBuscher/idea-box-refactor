@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Idea Box</title>
+  <link rel="stylesheet" href="reset.css">
+  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <section class="header-container">
+      <h1 class="logo" aria-label="Idea Box logo"><span>idea</span>box</h1>
+      <form id="new-idea-form">
+        <input class="idea-title-input" type="text" placeholder="Title" aria-label="New idea title" aria-required="true"/>
+        <input class="idea-body-input" type="text" placeholder="Body" aria-label="New idea body" aria-required="true"/>
+        <button type="submit" aria-label="Submit new idea" form="new-idea-form" class="save-idea-button">save</button>
+      </form>
+    </section>
+  </header>
+  <section class="ideas-area">
+    <div class="ideas-container"> 
+      <input class="search-input" type="text" placeholder="Search" aria-label="Search ideas"/>
+      <article class="idea-list" aria-live="polite"></article>
+    </div>
+  </section>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="jquery-3.3.1.min.js"><\/script>')</script>
+  <script type="text/javascript" src="script.js"></script>
+</body>
+</html>
