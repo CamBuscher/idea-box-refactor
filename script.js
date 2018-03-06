@@ -6,7 +6,6 @@ var $downvoteButton = $('.downvote-button');
 $('.save-idea-button').on('click', function(event) {
   createIdea();
   clearInputs();
-  // storeIdeaList();
   event.preventDefault();
 });
 $('.idea-list').on('click', '.delete-button', deleteIdea);
@@ -18,7 +17,6 @@ $('.idea-list').on('blur', 'p', editBodyText);
 $(document).on('input', '.search-input', searchIdeas);
 $(window).on('load', function() {
   loadIdeaList();
-  // displayIdeas();
 });
 
 function Idea(title, body, id, quality) {
@@ -55,12 +53,6 @@ function prependIdea(title, body, id, quality) {
     `);
 };
 
-// function storeIdeaList() {
-//   var ideaList = $('.idea-list').html();
-//   var JSONIdeaList = JSON.stringify(ideaList);
-//   localStorage.setItem('storedIdeaList', JSONIdeaList);
-// };
-
 function loadIdeaList() {
   $.each(localStorage, function(key) {
     var idea = localStorage.getItem(key);
@@ -68,6 +60,14 @@ function loadIdeaList() {
     prependIdea(parsedIdea.title, parsedIdea.body, parsedIdea.id, parsedIdea.quality);
   });
 };
+
+function changeQuality(id, newQuality) {
+  var card = localStorage.getItem(id);
+  card = JSON.parse(card);
+  card.quality = newQuality;
+  card = JSON.stringify(card);
+  localStorage.setItem(id, card);
+}
 
 function deleteIdea() {
   var id = $(this).closest('.idea').prop('id');
@@ -81,22 +81,25 @@ function deleteIdea() {
 
 function upvote() {
   var $qualityLevel = $(this).parentsUntil('.idea').find('.idea-quality').text();
-  var id = $(this).parentsUntil('.idea').prop('id');
-  var title = $(this).parentsUntil('h2').text();
-  var body = $(this).parentsUntil('p').text();
+  var id = $(this).closest('.idea').attr('id');
   if ($qualityLevel === 'swill') {
     $(this).parentsUntil('.idea').find('.idea-quality').text('plausible');
+    changeQuality(id, 'plausible')
   } else {
     $(this).parentsUntil('.idea').find('.idea-quality').text('genius');
+    changeQuality(id, 'genius')
   }
 }
 
 function downvote() {
   var $qualityLevel = $(this).parentsUntil('.idea').find('.idea-quality').text();
+  var id = $(this).closest('.idea').attr('id');
   if ($qualityLevel === 'genius') {
     $(this).parentsUntil('.idea').find('.idea-quality').text('plausible');
+    changeQuality(id, 'plausible')
   } else {
     $(this).parentsUntil('.idea').find('.idea-quality').text('swill');
+    changeQuality(id, 'swill')
   }
 };
 
@@ -112,10 +115,6 @@ function clearInputs() {
   $ideaBodyInput.val('');
 }
 
-// function displayIdeas() {
-//   $('.idea').removeAttr('style');
-// }
-
 function editTitleText() {
   var newText = $(this).text();
   console.log($(this));
@@ -126,4 +125,3 @@ function editBodyText() {
   var newText = $(this).text();
   $(this).html(`${newText}`);
 };
-
