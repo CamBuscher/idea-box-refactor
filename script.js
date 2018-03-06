@@ -6,9 +6,8 @@ var $downvoteButton = $('.downvote-button');
 $('.save-idea-button').on('click', function(event) {
   createIdea();
   clearInputs();
-  storeIdeaList();
+  // storeIdeaList();
   event.preventDefault();
-  $('#new-item-form').children('input').val('');
 });
 $('.idea-list').on('click', '.delete-button', deleteIdea);
 $('.idea-list').on('click', '.upvote-button', upvote);
@@ -22,15 +21,24 @@ $(window).on('load', function() {
   displayIdeas();
 });
 
+function Idea(title, body) {
+  this.id = Date.now();
+  this.title = title || 'No title specified';
+  this.body = body || 'No body specified';
+};
+
 function createIdea() {
   var ideaTitleInputValue = $ideaTitleInput.val();
   var ideaBodyInputValue = $ideaBodyInput.val();
-  prependIdea(ideaTitleInputValue, ideaBodyInputValue)
-}
+  var newIdea = new Idea(ideaTitleInputValue, ideaBodyInputValue);
+  var JSONNewIdea = JSON.stringify(newIdea);
+  localStorage.setItem(newIdea.id, JSONNewIdea);
+  prependIdea(newIdea.title, newIdea.body, newIdea.id);
+};
 
-function prependIdea(title, body) {
+function prependIdea(title, body, id) {
   $('.idea-list').prepend(`
-    <div class="idea" >
+    <div class="idea" id='${id}'>
       <h2 aria-label="Idea title" contenteditable="true">${title}</h2> 
       <img tabindex="0" role="button" aria-label="Delete idea" class="delete-button icon" src="icons/delete.svg">
       <p aria-label="Idea body" contenteditable="true">${body}</p>
